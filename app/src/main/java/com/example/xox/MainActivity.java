@@ -1,12 +1,17 @@
 package com.example.xox;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +33,31 @@ public class MainActivity extends AppCompatActivity {
         this.chips = getAllChips();
         resetGame();
         gameOver = false;
-
     }
 
 
     public void userClicked(View view) {
         ImageView chip = (ImageView) findViewById(view.getId());
 
-        if (isChipValid(chip) && !gameOver) {
+        if (isChipValid(chip) && !this.gameOver) {
             showChip(chip);
             if (!isGameOver()) {
                 changeTurn();
+            }else {
+                this.gameOver = true;
+                finishGame();
             }
+        }
+    }
+
+    public void finishGame(){
+        if(isWon()){
+            TextView result = (TextView) findViewById(R.id.result);
+            String player = this.turn == 0 ? "RED" : "YELLOW";
+            int playerColor = player == "RED" ? Color.RED : Color.YELLOW;
+            result.setTextColor(playerColor);
+            result.setAlpha(1f);
+            result.setText(player + " Has Won!");
         }
     }
 
@@ -183,5 +201,8 @@ public class MainActivity extends AppCompatActivity {
     public void resetGame() {
         hideAllChips();
         setAllChips();
+        this.gameOver = false;
+        TextView result = (TextView) findViewById(R.id.result);
+        result.setAlpha(0f);
     }
 }
