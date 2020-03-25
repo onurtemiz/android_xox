@@ -2,6 +2,7 @@ package com.example.xox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +28,25 @@ public class MainActivity extends AppCompatActivity {
     public void userClicked(View view){
         ImageView chip = (ImageView) findViewById(view.getId());
 
+        if (isChipValid(chip)){
+            showChip(chip);
+            changeTurn();
+
+        }
+    }
+
+    public void changeTurn(){
+        this.turn = this.turn == 0 ? 1 : 0;
+    }
+
+    public void showChip(ImageView chip){
+        chip.setImageResource(this.turn == 0 ? R.drawable.red : R.drawable.yellow);
         chip.setImageAlpha(255);
+    }
+
+    public boolean isChipValid(ImageView chip){
+        return chip.getImageAlpha()== 0 ? true : false;
+
     }
 
     public void hideAllChips(){
